@@ -2,6 +2,11 @@
 
 AI-Director is a specialized orchestration layer designed to bridge the gap between creative prose and consistent video generation. It transforms raw user descriptions into structured, high-fidelity production briefs ready for video synthesis.
 
+
+#### Demo version limits
+The demo version available at eksperymentyprzemka.pl has a budget limit of $5. Please avoid overusing it, as it may stop working once the limit is reached.
+For budget updates or additional quota, please contact me directly.
+
 ---
 
 ## How the Agent Works
