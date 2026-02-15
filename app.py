@@ -77,14 +77,12 @@ def check_password():
     """Returns `True` if the user had the correct password."""
 
     # 1. Check if we have a password set in secrets.toml
-    if "access_code" not in st.secrets:
-
-        acc_key = os.environ.get("access_code")
+    acc_key = os.environ.get("access_code")
+    
+    if acc_key == '':
         
-        if acc_key == '':
-            
-            st.error("formatting error: 'access_code' is missing from .streamlit/secrets.toml")
-            return False
+        st.error("formatting error: 'access_code' is missing from .streamlit/secrets.toml")
+        return False
 
     def password_entered():
         """Checks whether a password entered by the user is correct."""
