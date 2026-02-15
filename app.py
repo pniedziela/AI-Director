@@ -78,12 +78,17 @@ def check_password():
 
     # 1. Check if we have a password set in secrets.toml
     if "access_code" not in st.secrets:
-        st.error("formatting error: 'access_code' is missing from .streamlit/secrets.toml")
-        return False
+
+        acc_key = os.environ.get("access_code")
+        
+        if acc_key == '':
+            
+            st.error("formatting error: 'access_code' is missing from .streamlit/secrets.toml")
+            return False
 
     def password_entered():
         """Checks whether a password entered by the user is correct."""
-        if st.session_state["password"] == st.secrets["access_code"]:
+        if st.session_state["password"] == os.environ.get("access_code") #st.secrets["access_code"]:
             st.session_state["password_correct"] = True
             del st.session_state["password"]  # Don't keep password in session state
         else:
@@ -137,9 +142,18 @@ class ScenePlan(BaseModel):
 class VideoBackend:
     def __init__(self):
         # LOAD KEYS FROM SECRETS
-        self.google_key = st.secrets.get("google_api_key", "")
-        self.hf_token = st.secrets.get("hf_token", "")
+        # self.google_key = st.secrets.get("google_api_key", "")
+        # self.hf_token = st.secrets.get("hf_token", "")
         
+        def get_secret(key):
+                    try:
+                        return st.secrets.get(key) or os.environ.get(key) or ""
+                    except Exception:
+                        return os.environ.get(key) or ""
+
+        self.google_key = get_secret("google_api_key")
+        self.hf_token = get_secret("hf_token")
+
         if self.google_key:
             # FIX: Force 'v1alpha' to access all models including aliases
             self.gemini = genai.Client(
